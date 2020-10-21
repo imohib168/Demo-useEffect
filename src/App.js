@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+// import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	let data = { title: "Waiting for Data" }
+	const [todo, setTodo] = useState(data);
+	const [Data, setData] = useState(true);
+	const [fetching, setFetching] = useState(false);
+
+	useEffect(() => {
+
+		async function fetchingData() {
+			setFetching(true)
+			const response = await fetch("https://jsonplaceholder.typicode.com/todos/1")
+
+			let data2 = await response.json();
+			setTodo(data2)
+			setFetching(false)
+			// console.log("Data = ", todo);
+		}
+
+		if(fetching) {
+			return <div>Loading Data.....</div>
+		}
+
+		fetchingData()
+	}, [Data])
+	return (
+		<div>
+			Title: {todo.title} <br/>
+			{/* Id: {todo.id} */}
+		</div>
+	);
 }
 
 export default App;
